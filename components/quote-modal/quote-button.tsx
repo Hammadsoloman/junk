@@ -7,7 +7,7 @@ import { QuoteSuccess } from "./quote-success"
 import { useQuote } from "@/contexts/quote-context"
 import { AlertCircle } from "lucide-react"
 
-export function QuoteButton() {
+export function QuoteButton({ service }: { service?: string | null }) {
   const { quoteData, resetQuoteData } = useQuote()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isSuccessOpen, setIsSuccessOpen] = useState(false)
@@ -85,7 +85,7 @@ export function QuoteButton() {
         )}
       </div>
 
-      <QuoteModal isOpen={isModalOpen} onClose={handleCloseModal} onComplete={handleQuoteComplete} />
+      <QuoteModal isOpen={isModalOpen} onClose={handleCloseModal} onComplete={handleQuoteComplete} service={service} />
       <QuoteSuccess isOpen={isSuccessOpen} onClose={handleCloseSuccess} quoteData={modalQuoteData} />
     </>
   )

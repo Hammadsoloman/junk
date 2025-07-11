@@ -94,7 +94,10 @@ export async function submitLeadToSmartMoving(
       // Move Information
       moveDate: quoteData.moveDate ? formatMoveDate(quoteData.moveDate) : undefined,
       moveSize: quoteData.moveSize ? mapMoveSize(quoteData.moveSize) : undefined,
-      serviceType: quoteData.serviceType ? mapServiceType(quoteData.serviceType) : undefined,
+      serviceType:
+        quoteData.serviceType && quoteData.serviceType !== "Moving"
+          ? quoteData.serviceType
+          : mapServiceType(quoteData.serviceType),
       notes: `Move timeframe: ${quoteData.moveTimeframe || "Not specified"}, Project status: ${quoteData.projectStatus || "Not specified"}`,
 
       // Origin Address

@@ -1,9 +1,13 @@
+"use client"
 import Image from "next/image"
 import { DollarSign, Package, Star, Timer, Gift, BarChart3, MapPin } from "lucide-react"
 import { QuoteButton } from "@/components/quote-modal/quote-button"
 import { LocationSearch } from "@/components/location-search/location-search"
+import { useSearchParams } from "next/navigation"
 
 export default function Home() {
+  const searchParams = useSearchParams();
+  const service = searchParams.get("ServiceType");
   return (
     <div
       className=" relative"
@@ -42,7 +46,7 @@ export default function Home() {
               </div>
 
               {/* CTA Button */}
-              <QuoteButton />
+              <QuoteButton service={service} />
 
               {/* Features Grid */}
               <div className="grid grid-cols-2 gap-y-2 lg:gap-y-6 mt-8 text-sm lg:text-md">

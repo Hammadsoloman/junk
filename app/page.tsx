@@ -17,7 +17,7 @@ const services = [
   //   description:
   //     " Whether you're relocating your home or office, we handle the packing, lifting, and transport with care and precision.",
   //   icon: MOVING_ICON,
-  //   urlParam: "moving",
+  //   urlParam: "Moving",
   // },
   {
     id: "moving-3",
@@ -25,7 +25,7 @@ const services = [
     description:
       " From old furniture and appliances to renovation debris, we haul away the mess so you don’t have to.",
     icon: JUNK_ICON,
-    urlParam: "junk",
+    urlParam: "JunkRemoval",
   },
   {
     id: "moving-2",
@@ -33,7 +33,7 @@ const services = [
     description:
       " Need a few strong hands for furniture setup, event prep, or truck loading? Our professional crew is ready — no truck needed.",
     icon: LABOR_ICON,
-    urlParam: "labor",
+    urlParam: "LaborOnly",
   },
 ];
 
@@ -114,7 +114,7 @@ export default function MovingMavericksLanding() {
 
         {/* Apply Button */}
         <div className="text-center">
-          <Link href={`/service?service=${currentServiceUrlParam}`}>
+          <Link href={`/service?ServiceType=${currentServiceUrlParam}`}>
             <Button className="bg-teal-700 hover:bg-teal-800 text-white px-12 py-3 text-lg rounded-md font-medium">
               Apply & Next
             </Button>

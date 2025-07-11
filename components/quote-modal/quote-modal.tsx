@@ -38,6 +38,7 @@ type QuoteModalProps = {
   isOpen: boolean;
   onClose: () => void;
   onComplete: (data: QuoteData) => void;
+  service?: string | null;
 };
 
 export type QuoteData = {
@@ -56,7 +57,7 @@ export type QuoteData = {
   phoneNumber: string;
 };
 
-export function QuoteModal({ isOpen, onClose, onComplete }: QuoteModalProps) {
+export function QuoteModal({ isOpen, onClose, onComplete, service }: QuoteModalProps) {
   const { quoteData, updateQuoteData, markStepCompleted, submitQuoteData } =
     useQuote();
   const [step, setStep] = useState(1);
@@ -272,11 +273,25 @@ export function QuoteModal({ isOpen, onClose, onComplete }: QuoteModalProps) {
     quoteData.destinationZip,
   ]);
 
+  // When moving to the next step from step 1, skip step 2 if service is JunkRemoval
   const handleMoveTimeSelect = (time: string) => {
     setData({ ...data, moveTime: time });
     updateQuoteData({ moveTimeframe: time });
     markStepCompleted("moveTimeframe");
-    setStep(2);
+    if (service === "JunkRemoval") {
+      setStep(3); // Skip step 2
+    } else {
+      setStep(2);
+    }
+  };
+
+  // When going back from step 3 to step 1 for JunkRemoval, decrement by 2
+  const handleBack = () => {
+    if (service === "JunkRemoval" && step === 3) {
+      setStep(1);
+    } else {
+      setStep(step - 1);
+    }
   };
 
   const handleMoveSizeSelect = (size: string) => {
@@ -677,7 +692,10 @@ export function QuoteModal({ isOpen, onClose, onComplete }: QuoteModalProps) {
   };
 
   // Calculate progress percentage
-  const progressPercentage = ((step - 1) / 11) * 100;
+  const totalSteps = service === "JunkRemoval" ? 10 : 11;
+  // For JunkRemoval, display step number as step-1 for steps >= 3
+  const displayStep = service === "JunkRemoval" && step >= 3 ? step - 1 : step;
+  const progressPercentage = ((displayStep - 1) / totalSteps) * 100;
 
   if (!isClient.current) return null; // Prevent SSR mismatch
 
@@ -695,7 +713,7 @@ export function QuoteModal({ isOpen, onClose, onComplete }: QuoteModalProps) {
 
           {/* Step indicator */}
           <div className="bg-[#064c3b] text-white px-4 py-2 text-sm font-medium flex justify-between items-center">
-            <span>Step {step} of 11</span>
+            <span>Step {displayStep} of {totalSteps}</span>
             <button
               onClick={handleClose}
               className="text-white hover:text-gray-200 focus:outline-none"
@@ -710,7 +728,7 @@ export function QuoteModal({ isOpen, onClose, onComplete }: QuoteModalProps) {
             {step === 1 && (
               <div className="space-y-6">
                 <h2 className="text-2xl font-bold text-[#064c3b] text-center mb-6">
-                  When are you Moving?
+                 {service === "JunkRemoval" ? "When do you need junk removal?" : "When are you Moving?"}
                 </h2>
                 <div className="space-y-3">
                   {[
@@ -738,7 +756,7 @@ export function QuoteModal({ isOpen, onClose, onComplete }: QuoteModalProps) {
             )}
 
             {/* Step 2: Choose Your Move Size */}
-            {step === 2 && (
+            {step === 2 && service !== "JunkRemoval" && (
               <div className="space-y-6">
                 <h2 className="text-2xl font-bold text-[#064c3b] text-center mb-6">
                   Choose Your Move Size
@@ -1481,7 +1499,7 @@ export function QuoteModal({ isOpen, onClose, onComplete }: QuoteModalProps) {
               <Button
                 variant="ghost"
                 className="text-gray-600 hover:text-[#064c3b] hover:bg-transparent flex items-center gap-1"
-                onClick={() => setStep(step - 1)}
+                onClick={handleBack}
               >
                 <ChevronLeft size={16} />
                 <span>Back</span>
