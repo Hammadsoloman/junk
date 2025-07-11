@@ -57,7 +57,12 @@ export type QuoteData = {
   phoneNumber: string;
 };
 
-export function QuoteModal({ isOpen, onClose, onComplete, service }: QuoteModalProps) {
+export function QuoteModal({
+  isOpen,
+  onClose,
+  onComplete,
+  service,
+}: QuoteModalProps) {
   const { quoteData, updateQuoteData, markStepCompleted, submitQuoteData } =
     useQuote();
   const [step, setStep] = useState(1);
@@ -415,6 +420,7 @@ export function QuoteModal({ isOpen, onClose, onComplete, service }: QuoteModalP
   };
 
   const handleConfirmBySMS = async () => {
+ 
     try {
       setIsSendingSMS(true);
       setSubmissionError("");
@@ -456,6 +462,8 @@ export function QuoteModal({ isOpen, onClose, onComplete, service }: QuoteModalP
   };
 
   const handleVerificationSubmit = async () => {
+ 
+  
     //  if (verificationCode.length >= 3) {
     setIsSubmitting(true);
     setSubmissionError("");
@@ -713,7 +721,9 @@ export function QuoteModal({ isOpen, onClose, onComplete, service }: QuoteModalP
 
           {/* Step indicator */}
           <div className="bg-[#064c3b] text-white px-4 py-2 text-sm font-medium flex justify-between items-center">
-            <span>Step {displayStep} of {totalSteps}</span>
+            <span>
+              Step {displayStep} of {totalSteps}
+            </span>
             <button
               onClick={handleClose}
               className="text-white hover:text-gray-200 focus:outline-none"
@@ -728,7 +738,9 @@ export function QuoteModal({ isOpen, onClose, onComplete, service }: QuoteModalP
             {step === 1 && (
               <div className="space-y-6">
                 <h2 className="text-2xl font-bold text-[#064c3b] text-center mb-6">
-                 {service === "JunkRemoval" ? "When do you need junk removal?" : "When are you Moving?"}
+                  {service === "JunkRemoval"
+                    ? "When do you need junk removal?"
+                    : "When are you Moving?"}
                 </h2>
                 <div className="space-y-3">
                   {[
@@ -790,25 +802,48 @@ export function QuoteModal({ isOpen, onClose, onComplete, service }: QuoteModalP
             {/* Step 3: What type of service are you looking for */}
             {step === 3 && (
               <div className="space-y-6">
-                <h2 className="text-2xl font-bold text-[#064c3b] text-center mb-6">
-                  What type of service are you looking for?
-                </h2>
-                <div className="space-y-3">
-                  {["Cheapest", "Standard", "Premium"].map((option) => (
-                    <button
-                      key={option}
-                      className={cn(
-                        "w-full py-3 px-4 rounded-md text-center font-medium transition-colors border",
-                        data.serviceType === option
-                          ? "bg-[#064c3b] text-white border-[#064c3b]"
-                          : "bg-white text-gray-800 border-gray-300 hover:border-[#064c3b] hover:text-[#064c3b]"
-                      )}
-                      onClick={() => handleServiceTypeSelect(option)}
+                {service && service !== "Moving" ? (
+                  // Auto-set service type and proceed
+                  <div className="space-y-6">
+                    <h2 className="text-2xl font-bold text-[#064c3b] text-center mb-6">
+                      Service Type Confirmed
+                    </h2>
+                    <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-md text-center">
+                      <p className="text-sm">Service Type: {service}</p>
+                    </div>
+                    <Button
+                      onClick={() => {
+                        handleServiceTypeSelect(service);
+                      }}
+                      className="w-full bg-[#064c3b] hover:bg-[#053c2e] text-white"
                     >
-                      {option}
-                    </button>
-                  ))}
-                </div>
+                      Continue
+                    </Button>
+                  </div>
+                ) : (
+                  // Show normal service type selection
+                  <>
+                    <h2 className="text-2xl font-bold text-[#064c3b] text-center mb-6">
+                      What type of service are you looking for?
+                    </h2>
+                    <div className="space-y-3">
+                      {["Cheapest", "Standard", "Premium"].map((option) => (
+                        <button
+                          key={option}
+                          className={cn(
+                            "w-full py-3 px-4 rounded-md text-center font-medium transition-colors border",
+                            data.serviceType === option
+                              ? "bg-[#064c3b] text-white border-[#064c3b]"
+                              : "bg-white text-gray-800 border-gray-300 hover:border-[#064c3b] hover:text-[#064c3b]"
+                          )}
+                          onClick={() => handleServiceTypeSelect(option)}
+                        >
+                          {option}
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
               </div>
             )}
 
