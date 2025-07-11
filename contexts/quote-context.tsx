@@ -198,7 +198,7 @@ export function QuoteProvider({ children }: { children: React.ReactNode }) {
         email: quoteData.email,
         phoneNumber: quoteData.phoneNumber,
         moveDate: quoteData.moveDate,
-        moveSize: quoteData.moveSize,
+        //moveSize: quoteData.moveSize,
       }
 
       const missingFields = Object.entries(requiredFields).filter(([key, value]) => !value)
