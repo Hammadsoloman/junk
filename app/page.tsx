@@ -44,7 +44,7 @@ export default function MovingMavericksLanding() {
   const [currentServiceUrlParam, setCurrentServiceUrlParam] = useState<string>(
     services[0].urlParam
   );
-  console.log(selectedService);
+
   const handleServiceSelect = (serviceId: string) => {
     setSelectedService(serviceId);
   };
