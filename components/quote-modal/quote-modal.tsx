@@ -404,7 +404,7 @@ export function QuoteModal({
       });
       markStepCompleted("phone");
 
-      // Use setTimeout to ensure state updates before step change
+      // Use setTimeout to ensure state updates before step changes
       setTimeout(() => {
         setStep(10);
       }, 50);
