@@ -95,7 +95,7 @@ export default function MovingMavericksLanding() {
 
                   <div className="flex flex-col items-center text-center pt-8">
                     <div className="mb-4 p-3 bg-green-100 rounded-full">
-                      <Image src={service.icon} alt={service.title} />
+                      <Image src={service.icon} alt={service.title} width={63} height={63} style={{maxWidth:63}} />
                     </div>
 
                     <h3 className="text-xl font-semibold text-teal-800 mb-3">
